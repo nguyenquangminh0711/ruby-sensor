@@ -21,6 +21,7 @@ group :development, :test do
 
   # HTTP Clients
   gem 'excon'
+  gem 'faraday'
 
   # Rack v2 dropped support for Ruby 2.2 and higher.
   if RUBY_VERSION < '2.2'
