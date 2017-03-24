@@ -130,12 +130,11 @@ module Instana
       def collect_process_info
         process = {}
         if @is_linux
-          cmdline = IO.read("/proc/#{Process.pid}/cmdline").force_encoding(Encoding::US_ASCII).split("\0")
+          cmdline = IO.read("/proc/#{Process.pid}/cmdline").split(?\x00)
         else
-          cmdline = ProcTable.ps(Process.pid).cmdline.split("\0")
+          cmdline = ProcTable.ps(Process.pid).cmdline.split(?\x00)
         end
         process[:name] = cmdline.shift
-        process[:name].force_encoding(Encoding::US_ASCII)
         process[:arguments] = cmdline
 
         if RUBY_PLATFORM =~ /darwin/i
