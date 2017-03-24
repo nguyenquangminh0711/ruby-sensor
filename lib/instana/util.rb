@@ -129,8 +129,13 @@ module Instana
       #
       def collect_process_info
         process = {}
-        if @is_linux
-          cmdline = IO.read("/proc/#{Process.pid}/cmdline").split(?\x00)
+        cmdline_file = "/proc/#{Process.pid}/cmdline"
+
+        # If there is a /proc filesystem, we read this manually so
+        # we can split on embedded null bytes.  Otherwise (e.g. OSX, Windows)
+        # use ProcTable.
+        if File.exist?(cmdline_file)
+          cmdline = IO.read(cmdline_file).split(?\x00)
         else
           cmdline = ProcTable.ps(Process.pid).cmdline.split(?\x00)
         end
