@@ -129,7 +129,11 @@ module Instana
       #
       def collect_process_info
         process = {}
-        cmdline = ProcTable.ps(Process.pid).cmdline.split("\0")
+        if @is_linux
+          cmdline = IO.read("/proc/#{Process.pid}/cmdline").force_encoding("US-ASCII").split("\0")
+        else
+          cmdline = ProcTable.ps(Process.pid).cmdline.split("\0")
+        end
         process[:name] = cmdline.shift
         process[:arguments] = cmdline
 
