@@ -84,7 +84,9 @@ module Instana
     # @param kvs [Hash] list of key values to be reported in the span
     #
     def log_entry(name, kvs = {})
+      puts "Before log entry #{name} - checking"
       return unless tracing?
+      puts "Before log entry #{name}"
       self.current_trace.new_span(name, kvs)
     end
 
@@ -157,6 +159,7 @@ module Instana
           Instana.processor.stage(self.current_trace)
         end
       end
+      puts "Exit trace"
       self.current_trace = nil
     end
 

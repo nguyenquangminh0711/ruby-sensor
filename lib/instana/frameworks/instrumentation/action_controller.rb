@@ -116,6 +116,7 @@ module Instana
       # for versions 3 and 4.
       #
       def process_action_with_instana(*args)
+        puts "Before log entry instrumentation controller"
         kv_payload = { :actioncontroller => {} }
         kv_payload[:actioncontroller][:controller] = self.class.name
         kv_payload[:actioncontroller][:action] = action_name
@@ -134,6 +135,7 @@ module Instana
       # for versions 3 and 4.
       #
       def render_with_instana(*args, &blk)
+        puts "Before log entry instrumentation view"
         if args.length > 0 && args[0].is_a?(Hash)
           name = get_render_topic(args[0])
         end
